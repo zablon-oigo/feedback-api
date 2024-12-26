@@ -1,6 +1,7 @@
 const{GetItemCommand,PutItemCommand,DeleteItemCommand,ScanCommand,UpdateItemCommand}=require("@aws-sdk/client-dynamodb")
 const{marshall,unmarshall}=require("@aws-sdk/util-dynamodb")
 const { v4: uuidv4 } = require('uuid');
+const db = require("./db")
 const getFeedback = async (event) => {
     const response = { statusCode: 200 };
 
