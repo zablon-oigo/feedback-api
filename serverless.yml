@@ -1,0 +1,107 @@
+service: dynamodb-feedback-api
+
+provider:
+  name: aws
+  runtime: nodejs20.x
+  stage: dev
+  region: us-east-1
+  environment:
+    DYNAMODB_TABLE_NAME: ${self:custom.feedbackTableName}
+
+custom:
+  feedbackTableName: feedback-table-${self:provider.stage}
+
+plugins:
+  - serverless-iam-roles-per-function
+
+functions:
+  getFeedback:
+    handler: api.getFeedback
+    name: get-feedback
+    memorySize: 128
+    timeout: 5
+    events:
+      - http:
+          path: feedback/{responseId}
+          method: GET
+    iamRoleStatements:
+      - Effect: "Allow"
+        Action:
+          - "dynamodb:GetItem"
+        Resource: !GetAtt FeedbackTable.Arn
+
+  createFeedback:
+    handler: api.createFeedback
+    name: create-feedback
+    memorySize: 128
+    timeout: 5
+    events:
+      - http:
+          path: feedback
+          method: POST
+    iamRoleStatements:
+      - Effect: "Allow"
+        Action:
+          - "dynamodb:PutItem"
+        Resource: !GetAtt FeedbackTable.Arn
+
+  updateFeedback:
+    handler: api.updateFeedback
+    name: update-feedback
+    memorySize: 128
+    timeout: 5
+    events:
+      - http:
+          path: feedback/{responseId}
+          method: PUT
+    iamRoleStatements:
+      - Effect: "Allow"
+        Action:
+          - "dynamodb:UpdateItem"
+        Resource: !GetAtt FeedbackTable.Arn
+
+  deleteFeedback:
+    handler: api.deleteFeedback
+    name: delete-feedback
+    memorySize: 128
+    timeout: 5
+    events:
+      - http:
+          path: feedback/{responseId}
+          method: DELETE
+    iamRoleStatements:
+      - Effect: "Allow"
+        Action:
+          - "dynamodb:DeleteItem"
+        Resource: !GetAtt FeedbackTable.Arn
+
+  getAllFeedback:
+    handler: api.getAllFeedback
+    name: get-all-feedback
+    memorySize: 128
+    timeout: 5
+    events:
+      - http:
+          path: feedbacks
+          method: GET
+    iamRoleStatements:
+      - Effect: "Allow"
+        Action:
+          - "dynamodb:Scan"
+        Resource: !GetAtt FeedbackTable.Arn
+
+resources:
+  Resources:
+    FeedbackTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: ${self:custom.feedbackTableName}
+        AttributeDefinitions:
+          - AttributeName: responseId
+            AttributeType: S
+        KeySchema:
+          - AttributeName: responseId
+            KeyType: HASH
+        ProvisionedThroughput:
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1
