@@ -118,3 +118,24 @@ const deleteFeedback = async (event) => {
 
     return response;
 };
+const getAllFeedback = async () => {
+    const response = { statusCode: 200 };
+
+    try {
+        const { Items } = await db.send(new ScanCommand({ TableName: process.env.DYNAMODB_TABLE_NAME }));
+        response.body = JSON.stringify({
+            message: "Successfully retrieved all feedback.",
+            data: Items.map((item) => unmarshall(item)),
+            Items,
+        });
+    } catch (e) {
+        console.error(e);
+        response.statusCode = 500;
+        response.body = JSON.stringify({
+            message: "Failed to retrieve feedback.",
+            errorMsg: e.message,
+        });
+    }
+
+    return response;
+};
