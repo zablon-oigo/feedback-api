@@ -93,3 +93,28 @@ const updateFeedback = async (event) => {
 
     return response;
 };
+const deleteFeedback = async (event) => {
+    const response = { statusCode: 200 };
+
+    try {
+        const params = {
+            TableName: process.env.DYNAMODB_TABLE_NAME,
+            Key: marshall({ responseId: event.pathParameters.responseId }),
+        };
+        const deleteResult = await db.send(new DeleteItemCommand(params));
+        response.body = JSON.stringify({
+            message: "Successfully deleted feedback.",
+            deleteResult,
+        });
+    } catch (e) {
+        console.error(e);
+        response.statusCode = 500;
+        response.body = JSON.stringify({
+            message: "Failed to delete feedback",
+            errorMsg: e.message,
+            errorStack: e.stack,
+        });
+    }
+
+    return response;
+};
