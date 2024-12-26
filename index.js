@@ -55,3 +55,41 @@ const createFeedback = async (event) => {
 
     return response;
 };
+const updateFeedback = async (event) => {
+    const response = { statusCode: 200 };
+
+    try {
+        const body = JSON.parse(event.body);
+        const objKeys = Object.keys(body);
+        const params = {
+            TableName: process.env.DYNAMODB_TABLE_NAME,
+            Key: marshall({ responseId: event.pathParameters.responseId }),
+            UpdateExpression: `SET ${objKeys.map((_, index) => `#key${index} = :value${index}`).join(", ")}`,
+            ExpressionAttributeNames: objKeys.reduce((acc, key, index) => ({
+                ...acc,
+                [`#key${index}`]: key,
+            }), {}),
+            ExpressionAttributeValues: marshall(objKeys.reduce((acc, key, index) => ({
+                ...acc,
+                [`:value${index}`]: body[key],
+            }), {})),
+        };
+
+        const updateResult = await db.send(new UpdateItemCommand(params));
+
+        response.body = JSON.stringify({
+            message: "Successfully updated feedback.",
+            updateResult,
+        });
+    } catch (e) {
+        console.error(e);
+        response.statusCode = 500;
+        response.body = JSON.stringify({
+            message: "Failed to update feedback.",
+            errorMsg: e.message,
+            errorStack: e.stack,
+        });
+    }
+
+    return response;
+};
