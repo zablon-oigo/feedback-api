@@ -24,6 +24,7 @@ functions:
       - http:
           path: feedback/{responseId}
           method: GET
+          cors: true
     iamRoleStatements:
       - Effect: "Allow"
         Action:
@@ -39,6 +40,7 @@ functions:
       - http:
           path: feedback
           method: POST
+          cors: true
     iamRoleStatements:
       - Effect: "Allow"
         Action:
@@ -54,6 +56,7 @@ functions:
       - http:
           path: feedback/{responseId}
           method: PUT
+          cors: true
     iamRoleStatements:
       - Effect: "Allow"
         Action:
@@ -69,6 +72,7 @@ functions:
       - http:
           path: feedback/{responseId}
           method: DELETE
+          cors: true
     iamRoleStatements:
       - Effect: "Allow"
         Action:
@@ -84,6 +88,7 @@ functions:
       - http:
           path: feedbacks
           method: GET
+          cors: true
     iamRoleStatements:
       - Effect: "Allow"
         Action:
