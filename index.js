@@ -1,5 +1,6 @@
 const{GetItemCommand,PutItemCommand,DeleteItemCommand,ScanCommand,UpdateItemCommand}=require("@aws-sdk/client-dynamodb")
 const{marshall,unmarshall}=require("@aws-sdk/util-dynamodb")
+const { v4: uuidv4 } = require('uuid');
 const getFeedback = async (event) => {
     const response = { statusCode: 200 };
 
@@ -34,6 +35,9 @@ const createFeedback = async (event) => {
 
     try {
         const body = JSON.parse(event.body);
+        if (!body.responseId) {
+            body.responseId = uuidv4();
+          }
         const params = {
             TableName: process.env.DYNAMODB_TABLE_NAME,
             Item: marshall(body || {}),
