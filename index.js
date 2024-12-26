@@ -139,3 +139,10 @@ const getAllFeedback = async () => {
 
     return response;
 };
+module.exports = {
+    getFeedback,
+    createFeedback,
+    updateFeedback,
+    deleteFeedback,
+    getAllFeedback,
+};
