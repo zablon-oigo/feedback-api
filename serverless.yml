@@ -43,7 +43,7 @@ functions:
           path: feedback
           method: POST
           cors:
-            origin: 'http://localhost:5173'
+            origin: 'http://localhost:5173/feedback'
     iamRoleStatements:
       - Effect: "Allow"
         Action:
