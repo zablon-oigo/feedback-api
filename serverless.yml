@@ -117,3 +117,4 @@ resources:
       Properties:
         BucketName: ${self:custom.s3Bucket}
         AccessControl: Private
+      DeletionPolicy: Delete
