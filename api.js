@@ -32,7 +32,11 @@ const getFeedback = async (event) => {
 };
 
 const createFeedback = async (event) => {
-    const response = { statusCode: 200 };
+    const response = { statusCode: 200,headers: {
+        "Access-Control-Allow-Origin": "http://localhost:5173",
+        "Access-Control-Allow-Methods": "POST, OPTIONS",
+        "Access-Control-Allow-Headers": "Content-Type",
+    }, };
 
     try {
         const body = JSON.parse(event.body);
