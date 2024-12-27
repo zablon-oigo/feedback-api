@@ -42,7 +42,8 @@ functions:
       - http:
           path: feedback
           method: POST
-          cors: true
+          cors:
+            origin: 'http://localhost:5173'
     iamRoleStatements:
       - Effect: "Allow"
         Action:
