@@ -10,6 +10,7 @@ provider:
 
 custom:
   feedbackTableName: feedback-table-${self:provider.stage}
+  S3_BUCKET_NAME: feedback-csv-bucket-${self:provider.stage}
 
 plugins:
   - serverless-iam-roles-per-function
@@ -110,3 +111,7 @@ resources:
         ProvisionedThroughput:
           ReadCapacityUnits: 1
           WriteCapacityUnits: 1
+    FeedbackCsvBucket:
+      Type: AWS::S3::Bucket
+      Properties:
+        BucketName: ${self:provider.environment.S3_BUCKET_NAME}
