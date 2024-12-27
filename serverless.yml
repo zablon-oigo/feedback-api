@@ -7,10 +7,11 @@ provider:
   region: us-east-1
   environment:
     DYNAMODB_TABLE_NAME: ${self:custom.feedbackTableName}
+    S3_BUCKET_NAME: ${self:custom.s3Bucket}
 
 custom:
   feedbackTableName: feedback-table-${self:provider.stage}
-  S3_BUCKET_NAME: feedback-csv-bucket-${self:provider.stage}
+  s3Bucket: feedback-csv-bucket-${self:provider.stage | lowercase}
 
 plugins:
   - serverless-iam-roles-per-function
@@ -114,4 +115,5 @@ resources:
     FeedbackCsvBucket:
       Type: AWS::S3::Bucket
       Properties:
-        BucketName: ${self:provider.environment.S3_BUCKET_NAME}
+        BucketName: ${self:custom.s3Bucket}
+        AccessControl: Private
