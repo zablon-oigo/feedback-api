@@ -8,4 +8,5 @@ resource "random_pet" "random" {
 }
 resource "aws_s3_bucket" "bucket" {
     bucket = random_pet.random.id
+    force_destroy = true
 }
