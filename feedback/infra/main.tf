@@ -6,3 +6,6 @@ provider "aws" {
 resource "random_pet" "random" {
     length = 8
 }
+resource "aws_s3_bucket" "bucket" {
+    bucket = random_pet.random.id
+}
