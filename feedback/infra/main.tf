@@ -12,10 +12,9 @@ resource "aws_s3_bucket" "bucket" {
 }
 resource "aws_s3_object" "upload_object" {
   for_each = fileset("${path.module}/../dist", "**/*")
-
-  bucket = aws_s3_bucket.bucket.id
-  key    = each.value
-  source = "${path.module}/../dist/${each.value}"  
-  etag   = filemd5("${path.module}/../dist/${each.value}") 
+  bucket   = aws_s3_bucket.bucket.id
+  key      = each.value
+  source   = "${path.module}/../dist/${each.value}"
+  etag     = filemd5("${path.module}/../dist/${each.value}")
 }
 
