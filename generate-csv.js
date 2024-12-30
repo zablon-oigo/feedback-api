@@ -38,3 +38,13 @@ const scanDynamoDBTable = async () => {
     const { Items } = await db.send(new ScanCommand(params));
     return Items.map((item) => unmarshall(item));
 };
+const uploadCsvToS3 = async (csvData) => {
+    const s3Params = {
+        Bucket: process.env.S3_BUCKET_NAME, 
+        Key: `feedback-${Date.now()}.csv`, 
+        Body: csvData,
+        ContentType: 'text/csv',
+    };
+
+    await s3.send(new PutObjectCommand(s3Params));
+};
