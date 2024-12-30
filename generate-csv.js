@@ -51,5 +51,23 @@ const uploadCsvToS3 = async (csvData) => {
 
 const lambdaHandler = async (event) => {
     const response = { statusCode: 200 };
+    try {
+        const feedbackData = await scanDynamoDBTable();
+
+        if (feedbackData.length === 0) {
+            console.log("No feedback data found.");
+            response.body = JSON.stringify({
+                message: "No feedback to generate CSV.",
+            });
+            return response;
+        }
+
+        const feedbackCsv = await generateCsv(feedbackData);
+
+        await uploadCsvToS3(feedbackCsv);
+
+        response.body = JSON.stringify({
+            message: "Successfully generated CSV and uploaded to S3.",
+        });
 
 }
