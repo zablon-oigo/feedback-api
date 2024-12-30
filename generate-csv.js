@@ -69,5 +69,15 @@ const lambdaHandler = async (event) => {
         response.body = JSON.stringify({
             message: "Successfully generated CSV and uploaded to S3.",
         });
+    } 
+    catch (e) {
+        console.error(e);
+        response.statusCode = 500;
+        response.body = JSON.stringify({
+            message: "Failed to generate CSV or upload to S3.",
+            errorMsg: e.message,
+            errorStack: e.stack,
+        });
+    }
 
 }
