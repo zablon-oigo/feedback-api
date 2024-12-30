@@ -30,3 +30,11 @@ const generateCsv = (feedbackData) => {
         });
     });
 };
+const scanDynamoDBTable = async () => {
+    const params = {
+        TableName: process.env.DYNAMODB_TABLE_NAME, 
+    };
+
+    const { Items } = await db.send(new ScanCommand(params));
+    return Items.map((item) => unmarshall(item));
+};
