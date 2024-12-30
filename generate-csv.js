@@ -48,3 +48,8 @@ const uploadCsvToS3 = async (csvData) => {
 
     await s3.send(new PutObjectCommand(s3Params));
 };
+
+const lambdaHandler = async (event) => {
+    const response = { statusCode: 200 };
+
+}
