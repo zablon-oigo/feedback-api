@@ -79,5 +79,9 @@ const lambdaHandler = async (event) => {
             errorStack: e.stack,
         });
     }
+    return response;
 
 }
+module.exports = {
+    lambdaHandler
+};
