@@ -98,6 +98,14 @@ functions:
           - "dynamodb:Scan"
         Resource: !GetAtt FeedbackTable.Arn
 
+  generateCsvAndUpload:
+    handler: generate-csv.lambdaHandler
+    name: generate-csv-file
+    memorySize: 128
+    timeout: 300
+    events:
+      - schedule:
+          rate: rate(5 minutes)
 resources:
   Resources:
     FeedbackTable:
