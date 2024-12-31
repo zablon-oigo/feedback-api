@@ -51,7 +51,7 @@ jobs:
           name: react-build
           path: infra/dist 
 
-      - name: Apply Terraform configuration
+      - name: Run Terraform Plan
         run: |
           cd infra  
-          terraform apply -auto-approve
+          terraform plan
